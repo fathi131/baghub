@@ -1,0 +1,148 @@
+.offer-management-page,
+.add-offer-page,
+.edit-offer-page {
+  flex: 1;
+  min-height: 100%;
+  padding: 40px;
+  background-color: #f4f6f8;
+}
+
+.offer-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.offer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.offer-header h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+
+.offer-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 25px;
+}
+
+.offer-table th, .offer-table td {
+  padding: 12px 10px;
+  text-align: center;
+  font-size: 13px;
+}
+
+.offer-table th {
+  font-weight: 600;
+  color: #333;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.offer-table td {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.btn-remove {
+  background-color: #b71c1c;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.btn-remove:hover {
+  background-color: #8e0000;
+}
+
+.offer-table .action-btns {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.btn-edit-offer,
+.btn-toggle-offer {
+  border: 1px solid #0d5b45;
+  border-radius: 4px;
+  padding: 5px 9px;
+  background: #fff;
+  color: #0d5b45;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.btn-toggle-offer:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+.offer-empty-state {
+  padding: 24px 12px !important;
+  text-align: center !important;
+  color: #6b7280;
+}
+
+
+.add-offer-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 25px;
+}
+
+.btn-add-offer {
+  background-color: #004d40;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-add-offer:hover {
+  background-color: #00352c;
+}
+
+.btn-cancel-offer {
+  border: 1px solid #9ca3af;
+  border-radius: 4px;
+  padding: 10px 18px;
+  background: #fff;
+  color: #374151;
+  cursor: pointer;
+}
+
+@media (max-width: 700px) {
+  .offer-management-page,
+  .add-offer-page,
+  .edit-offer-page {
+    padding: 20px 12px;
+  }
+
+  .offer-card,
+  .add-offer-card,
+  .edit-offer-card {
+    padding: 20px 14px;
+    overflow-x: auto;
+  }
+
+  .offer-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .offer-table {
+    min-width: 760px;
+  }
+}

@@ -1,0 +1,89 @@
+.add-brand-page {
+  flex: 1;
+  min-height: 100%;
+  padding: 40px;
+  background-color: #f4f6f8;
+}
+
+.add-brand-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 40px;
+  min-height: 500px;
+}
+
+.add-brand-card h2 {
+  margin: 0 0 10px 0;
+  font-size: 22px;
+}
+
+.section-subtitle {
+  font-size: 14px;
+  color: #333;
+  margin-top: 25px;
+  margin-bottom: 30px;
+}
+
+.add-brand-form {
+  max-width: 400px;
+}
+
+.add-brand-form .form-group {
+  margin-bottom: 25px;
+}
+
+.add-brand-form label {
+  display: block;
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.add-brand-form input,
+.add-brand-form select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  outline: none;
+  font-size: 14px;
+  box-sizing: border-box;
+  background-color: #fafafa;
+}
+
+.add-brand-form input:focus,
+.add-brand-form select:focus {
+  border-color: #004d40;
+  background-color: #fff;
+}
+
+.btn-add {
+  background-color: #004d40;
+  color: #ffffff;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.btn-add:hover {
+  background-color: #00352c;
+}
+
+.error-message {
+  color: red;
+  font-size: 13px;
+  margin-bottom: 15px;
+}
+
+@media (max-width: 700px) {
+  .add-brand-page {
+    padding: 20px 12px;
+  }
+
+  .add-brand-card {
+    padding: 24px 18px;
+  }
+}

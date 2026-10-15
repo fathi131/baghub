@@ -1,0 +1,149 @@
+.wallet-page-container {
+  display: flex;
+  gap: 30px;
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+
+.my-account-sidebar {
+  width: 250px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 20px;
+  height: fit-content;
+  background-color: #fff;
+}
+
+.my-account-sidebar h3 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.my-account-sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.my-account-sidebar li {
+  padding: 10px 12px;
+  cursor: pointer;
+  border-radius: 6px;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.my-account-sidebar li.active,
+.my-account-sidebar li:hover {
+  background-color: #f0f0f0;
+}
+
+
+.wallet-main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.wallet-card, .transaction-card {
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 25px;
+  background-color: #fff;
+}
+
+.wallet-card h2, .transaction-card h3 {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.balance-box {
+  border: 1px solid #bbb;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.balance-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.add-money-section label {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 8px;
+  color: #555;
+}
+
+.add-money-section input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #aaa;
+  box-sizing: border-box;
+  margin-bottom: 12px;
+}
+
+.quick-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.quick-buttons button {
+  padding: 6px 14px;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+  background-color: #fff;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.submit-wallet-btn {
+  background-color: #000;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  float: right;
+  font-weight: bold;
+}
+
+/* Transaction Table */
+.transaction-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.transaction-table th, .transaction-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  font-size: 14px;
+}
+
+.transaction-table th {
+  background-color: #f9f9f9;
+}
+
+.status-green {
+  color: green;
+  font-weight: bold;
+}
+
+.status-orange {
+  color: orange;
+  font-weight: bold;
+}
+
+.status-black {
+  color: #333;
+}

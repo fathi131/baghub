@@ -1,0 +1,108 @@
+.coupon-management-page {
+  min-height: 100%;
+  padding: 40px;
+  background-color: #f4f6f8;
+}
+
+.coupon-main-content {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.coupon-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  overflow-x: auto;
+}
+
+.coupon-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.coupon-header h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.coupon-table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+  margin-bottom: 25px;
+}
+
+.coupon-table th,
+.coupon-table td {
+  padding: 14px 10px;
+  text-align: center;
+  font-size: 13px;
+}
+
+.coupon-table th {
+  font-weight: 600;
+  color: #333;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.coupon-table td {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.btn-edit {
+  background-color: #004d40;
+  color: white;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-right: 5px;
+}
+
+.btn-unlist {
+  background-color: #b71c1c;
+  color: white;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.add-coupon-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 25px;
+}
+
+.btn-add-coupon {
+  background-color: #004d40;
+  color: white;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+@media (max-width: 700px) {
+  .coupon-management-page {
+    padding: 20px 12px;
+  }
+
+  .coupon-card {
+    padding: 18px 12px;
+  }
+
+  .coupon-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+}

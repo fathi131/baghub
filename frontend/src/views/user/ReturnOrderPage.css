@@ -1,0 +1,83 @@
+.return-container {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 0 20px;
+  font-family: Arial, sans-serif;
+}
+
+.breadcrumb {
+  font-size: 13px;
+  color: #374151;
+  margin-bottom: 20px;
+}
+
+.breadcrumb span {
+  font-weight: 600;
+}
+
+.return-card {
+  border: 1px solid #1f2937;
+  border-radius: 12px;
+  background-color: #ffffff;
+  padding: 40px 30px;
+  text-align: center;
+}
+
+.return-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: #111827;
+  margin-bottom: 30px;
+}
+
+.return-form {
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.reason-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 10px;
+  align-self: center;
+}
+
+.reason-textarea {
+  width: 100%;
+  border: 1px solid #1f2937;
+  border-radius: 16px;
+  padding: 12px;
+  font-size: 14px;
+  outline: none;
+  resize: none;
+  margin-bottom: 25px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.btn-submit {
+  background-color: #000000;
+  color: #ffffff;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 12px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.btn-cancel {
+  background-color: #881337;
+  color: #ffffff;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 12px;
+  font-size: 12px;
+  cursor: pointer;
+}

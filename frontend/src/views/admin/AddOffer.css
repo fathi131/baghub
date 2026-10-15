@@ -1,0 +1,88 @@
+.add-offer-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 30px 40px;
+  min-height: 520px;
+}
+
+.add-offer-card h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+
+.form-grid {
+  display: flex;
+  gap: 50px;
+  justify-content: center;
+}
+
+.form-column {
+  flex: 1;
+  max-width: 320px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 8px 14px;
+  border: 1px solid #777;
+  border-radius: 18px; 
+  outline: none;
+  font-size: 13px;
+  box-sizing: border-box;
+  background-color: #fff;
+}
+
+.form-group textarea {
+  border-radius: 12px;
+  resize: none;
+}
+
+.submit-btn-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.btn-submit {
+  background-color: #004d40;
+  color: #ffffff;
+  border: none;
+  padding: 10px 40px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-submit:hover {
+  background-color: #00352c;
+}
+
+.error-message {
+  color: red;
+  text-align: center;
+  font-size: 13px;
+  margin-bottom: 15px;
+}

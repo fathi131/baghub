@@ -1,0 +1,153 @@
+.banner-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 30px 40px;
+  min-height: 550px;
+}
+
+.banner-card h2 {
+  margin: 0 0 20px 0;
+  font-size: 22px;
+}
+
+
+.drop-zone {
+  background-color: #000000;
+  color: #ffffff;
+  border-radius: 12px;
+  padding: 40px;
+  text-align: center;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.drop-zone-icon {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.drop-zone-text {
+  font-size: 14px;
+  margin-bottom: 15px;
+  color: #e0e0e0;
+}
+
+.btn-select-image {
+  background-color: #ffffff;
+  color: #000000;
+  padding: 8px 18px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.btn-select-image:hover {
+  background-color: #f0f0f0;
+}
+
+.btn-upload-submit {
+  margin-top: 15px;
+  background-color: #004d40;
+  color: #fff;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+
+.main-banner-section h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.banner-preview-box {
+  background-color: #d2e4d0; 
+  border-radius: 8px;
+  padding: 30px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.banner-text-content {
+  max-width: 60%;
+}
+
+.banner-text-content h1 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #000000;
+  margin: 0 0 12px 0;
+  line-height: 1.2;
+}
+
+.banner-text-content p {
+  font-size: 12px;
+  color: #333333;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.btn-remove-banner {
+  background-color: #cc0000;
+  color: #ffffff;
+  border: none;
+  padding: 6px 16px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.btn-remove-banner:hover {
+  background-color: #990000;
+}
+
+.banner-image-wrapper img {
+  max-height: 180px;
+  object-fit: contain;
+}
+
+.no-banner-text {
+  color: #777;
+  font-style: italic;
+}
+
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 30px;
+}
+
+.page-nav, .page-num {
+  border: 1px solid #e0e0e0;
+  background-color: #fff;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.page-num.active {
+  background-color: #004d40;
+  color: #fff;
+  border-color: #004d40;
+}
+
+.error-message {
+  color: red;
+  font-size: 13px;
+  margin-bottom: 15px;
+}

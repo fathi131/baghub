@@ -1,0 +1,93 @@
+ .main-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 50px;
+  background-color: #03544c;  
+  color: #ffffff;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.nav-links {
+  display: flex;
+  gap: 25px;
+  flex: 1;
+  justify-content: flex-start;
+}
+
+.nav-links a {
+  color: #ffffff !important; 
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 15px;
+  transition: opacity 0.2s;
+}
+
+.nav-links a:hover {
+  opacity: 0.8;
+}
+
+
+.logo {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo a {
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff !important;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+  gap: 20px;
+}
+
+.user-auth {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 11px;
+  line-height: 1.2;
+}
+
+.welcome-text {
+  color: #ffffff !important;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  opacity: 0.9;
+}
+
+.login-link {
+  color: #ffffff !important;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 12px;
+}
+
+.login-link:hover {
+  text-decoration: underline;
+}
+
+.nav-icons {
+  display: flex;
+  gap: 18px;
+}
+
+.nav-icons a {
+  font-size: 18px;
+  text-decoration: none;
+  cursor: pointer;
+}

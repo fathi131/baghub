@@ -1,0 +1,85 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+
+aside a,
+.sidebar a,
+[class*="sidebar"] a,
+[class*="Sidebar"] a {
+  text-decoration: none !important;
+  color: inherit !important;
+  transition: background-color 0.2s ease;
+}
+
+aside a:hover,
+.sidebar a:hover,
+[class*="sidebar"] a:hover {
+  text-decoration: none !important;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.my-account-sidebar a,
+.account-sidebar a,
+[class*="account"] a {
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+.my-account-sidebar a:hover,
+.account-sidebar a:hover,
+[class*="account"] a:hover {
+  text-decoration: none !important;
+  color: #03544c !important;
+}
+
+
+aside a.active,
+.sidebar a.active,
+[class*="sidebar"] a.active {
+  background-color: rgba(255, 255, 255, 0.15);
+  font-weight: 600;
+}
+
+
+a:-webkit-any-link {
+  text-decoration: none;
+}
+
+
+.product-title a:hover,
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #004d40;
+  border-radius: 4px;
+}

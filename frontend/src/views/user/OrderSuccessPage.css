@@ -1,0 +1,91 @@
+.order-success-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+  padding: 40px 20px;
+}
+
+
+.order-success-card {
+  border: 2px solid #064e3b;
+  border-radius: 20px;
+  padding: 50px 40px;
+  max-width: 550px;
+  width: 100%;
+  text-align: center;
+  background-color: #ffffff;
+}
+
+.success-heading {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 30px;
+  letter-spacing: 0.5px;
+}
+
+.success-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.check-icon {
+  background-color: #22c55e;
+  color: #ffffff;
+  font-size: 12px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.success-subtext {
+  font-size: 14px;
+  color: #4b5563;
+  margin-bottom: 25px;
+}
+
+.order-number-text {
+  font-size: 15px;
+  color: #b91c1c; 
+  font-weight: 500;
+  margin-bottom: 35px;
+}
+
+.order-num {
+  font-weight: 700;
+}
+
+.success-btn-group {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.btn-success-green {
+  background-color: #064e3b;
+  color: #ffffff;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.btn-success-green:hover {
+  opacity: 0.9;
+}

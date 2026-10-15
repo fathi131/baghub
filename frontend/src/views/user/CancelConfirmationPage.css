@@ -1,0 +1,56 @@
+.cancel-confirm-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 65vh;
+  padding: 40px 20px;
+}
+
+
+.cancel-confirm-card {
+  border: 2px solid #064e3b;
+  border-radius: 24px;
+  padding: 80px 40px;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  background-color: #ffffff;
+}
+
+.cancel-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 20px;
+}
+
+.cancel-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+  line-height: 1.4;
+  margin-bottom: 40px;
+}
+
+
+.cancel-btn-group {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.btn-cancel-action {
+  background-color: #064e3b;
+  color: #ffffff;
+  border: none;
+  padding: 8px 36px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-cancel-action:hover {
+  background-color: #04382a;
+}

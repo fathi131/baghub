@@ -1,0 +1,357 @@
+.dashboard-container {
+  padding: 30px;
+  background-color: #fcfcfc;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Header */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.dashboard-header h2 {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0;
+  color: #111;
+}
+
+.header-actions {
+  display: flex;
+  gap: 15px;
+}
+
+.search-input-box {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  padding: 8px 16px;
+  border-radius: 20px;
+  width: 280px;
+}
+
+.search-input-box input {
+  border: none;
+  outline: none;
+  margin-left: 8px;
+  width: 100%;
+  font-size: 13px;
+}
+
+.time-filter-select {
+  background: #212121;
+  color: #ffffff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* Stats Top Cards Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 22px;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.stat-card-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.stat-card-info h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+.sub-text {
+  font-size: 10px;
+  color: #888;
+  margin-top: 4px;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111;
+}
+
+/* Enlarged Chart Wrappers */
+.chart-wrapper-large {
+  margin-top: 15px;
+  width: 100%;
+}
+
+/* Progress Bar for Orders */
+.orders-progress-wrapper {
+  margin-top: 25px;
+}
+
+.left-tag {
+  font-size: 11px;
+  color: #666;
+  margin-bottom: 6px;
+}
+
+.progress-bar-bg {
+  width: 100%;
+  height: 10px;
+  background-color: #eef2f6;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background-color: #3b82f6;
+  border-radius: 5px;
+}
+
+/* Bottom Grid */
+.bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 24px;
+}
+
+.content-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+}
+
+/* Best Selling Donut */
+.total-sales-badge {
+  margin: 15px 0 10px 0;
+  font-size: 18px;
+}
+
+.total-sales-badge span {
+  font-size: 12px;
+  color: #777;
+}
+
+.best-selling-tags {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.tag-item {
+  font-size: 11px;
+  background-color: #f8f9fa;
+  padding: 6px 12px;
+  border-radius: 15px;
+  color: #555;
+  width: fit-content;
+}
+
+.donut-chart-wrapper-large {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+/* Recent Orders Table */
+.card-header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.btn-view-all {
+  background: #f1f3f5;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 12px;
+  font-size: 12px;
+  cursor: pointer;
+  color: #333;
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.orders-table th,
+.orders-table td {
+  padding: 12px 10px;
+  font-size: 13px;
+  text-align: left;
+}
+
+.orders-table th {
+  color: #888;
+  font-weight: 500;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.orders-table td {
+  border-bottom: 1px solid #f8f9fa;
+  color: #333;
+}
+
+.status-pill {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-pill.processing {
+  color: #e67e22;
+}
+
+.status-pill.completed {
+  color: #27ae60;
+}
+
+/* Pagination */
+.pagination-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 25px;
+}
+
+.page-btn {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  padding: 6px 14px;
+  border-radius: 15px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.page-num {
+  background: #ffffff;
+  border: 1px solid #e9ecef;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.page-num.active {
+  background: #004d40;
+  color: #ffffff;
+  border: none;
+}
+
+.dashboard-error {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding: 12px 16px;
+  border: 1px solid #f1b8b8;
+  border-radius: 6px;
+  background: #fff4f4;
+  color: #9f2020;
+  font-size: 14px;
+}
+
+.dashboard-error button {
+  border: 1px solid #9f2020;
+  border-radius: 4px;
+  padding: 6px 12px;
+  background: #fff;
+  color: #9f2020;
+  cursor: pointer;
+}
+
+.orders-period-note,
+.dashboard-empty {
+  color: #777;
+  font-size: 12px;
+}
+
+.dashboard-empty-row {
+  padding: 24px 10px !important;
+  text-align: center !important;
+  color: #777 !important;
+}
+
+.status-pill.pending,
+.status-pill.processing {
+  color: #a96500;
+}
+
+.status-pill.shipped,
+.status-pill.delivered {
+  color: #2859a8;
+}
+
+.status-pill.cancelled,
+.status-pill.returned {
+  color: #a32626;
+}
+
+@media (max-width: 1000px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .bottom-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard-container {
+    padding: 18px 12px;
+  }
+
+  .dashboard-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .header-actions,
+  .time-filter-select {
+    width: 100%;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .content-card {
+    padding: 18px 12px;
+    overflow-x: auto;
+  }
+
+  .orders-table {
+    min-width: 480px;
+  }
+}

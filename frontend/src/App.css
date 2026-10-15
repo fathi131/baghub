@@ -1,0 +1,46 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+  background-color: #f8f9fa;
+  color: #333333;
+  line-height: 1.6;
+}
+
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+
+.auth-navbar, .footer {
+  background-color: #004d40; 
+  color: #ffffff;
+}
+
+.auth-navbar a, .footer a {
+  color: #ffffff;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.auth-navbar a:hover, .footer a:hover {
+  opacity: 0.8;
+}
+
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #004d40;
+  border-radius: 4px;
+}

@@ -1,0 +1,76 @@
+.add-category-container {
+  flex: 1;
+  background-color: #ffffff;
+  min-height: 100vh;
+  padding: 40px;
+}
+
+.add-category-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #000000;
+  margin-bottom: 60px;
+}
+
+.add-category-form {
+  max-width: 450px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.form-group {
+  width: 100%;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 20px;
+  border: 1px solid #c0c0c0;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.form-textarea {
+  width: 100%;
+  height: 120px;
+  padding: 14px 20px;
+  border: 1px solid #c0c0c0;
+  border-radius: 12px;
+  font-size: 14px;
+  outline: none;
+  resize: none;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: #a0a0a0;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  border-color: #084839;
+}
+
+.btn-submit {
+  background-color: #084839;
+  color: #ffffff;
+  border: none;
+  padding: 10px 32px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.2s;
+}
+
+.btn-submit:hover {
+  background-color: #06382c;
+}

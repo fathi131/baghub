@@ -1,0 +1,69 @@
+.payment-failed-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+  padding: 40px 20px;
+}
+
+
+.payment-failed-card {
+  border: 2px solid #064e3b;
+  border-radius: 20px;
+  padding: 60px 40px;
+  max-width: 550px;
+  width: 100%;
+  text-align: center;
+  background-color: #ffffff;
+}
+
+
+.failed-icon-circle {
+  width: 48px;
+  height: 48px;
+  background-color: #1a1a1a;
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px auto;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.failed-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 15px;
+}
+
+.failed-subtext {
+  font-size: 14px;
+  color: #374151;
+  margin-bottom: 35px;
+}
+
+.failed-btn-group {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.btn-failed-green {
+  background-color: #064e3b;
+  color: #ffffff;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-failed-green:hover {
+  background-color: #04382a;
+}
