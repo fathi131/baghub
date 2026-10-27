@@ -22,6 +22,22 @@ const Landing = () => {
     return `${BASE_URL}${cleanPath}`;
   };
 
+  const getItemPrice = (item) => {
+    let basePrice = Number(item.price || 0);
+    if (item.offer) {
+      if (item.offer.discountType === 'fixed') {
+        basePrice -= Number(item.offer.discountValue || 0);
+      } else {
+        const pctAmount = (basePrice * Number(item.offer.discountValue || 0)) / 100;
+        const discount = item.offer.maxDiscount > 0
+          ? Math.min(pctAmount, Number(item.offer.maxDiscount))
+          : pctAmount;
+        basePrice -= discount;
+      }
+    }
+    return Math.max(0, basePrice);
+  };
+
   useEffect(() => {
     const fetchHomeSections = async () => {
       try {
@@ -42,7 +58,6 @@ const Landing = () => {
 
   return (
     <div className="home-container">
-      
       <section className="hero-section">
         <div className="hero-content">
           <h1>
@@ -71,7 +86,6 @@ const Landing = () => {
         </div>
       </section>
 
-      
       <section className="section-container">
         <h2 className="section-title">Featured Products</h2>
 
@@ -92,7 +106,7 @@ const Landing = () => {
                 <h3>{product.name}</h3>
                 <p className="price">
                   {product.oldPrice && <span className="old-price">₹{product.oldPrice}</span>}{' '}
-                  <span>₹{product.price}</span>
+                  <span>₹{getItemPrice(product)}</span>
                 </p>
               </Link>
             ))}
@@ -105,7 +119,6 @@ const Landing = () => {
         )}
       </section>
 
-      
       <section className="section-container">
         <h2 className="section-title">Shop Your Favourites</h2>
         <div className="favourites-grid">
@@ -141,7 +154,6 @@ const Landing = () => {
         </div>
       </section>
 
-      
       <section className="section-container">
         <h2 className="section-title">Hand Picked</h2>
         <p className="section-subtitle">
@@ -171,7 +183,6 @@ const Landing = () => {
         </div>
       </section>
 
-      
       <section className="trending-section">
         <h2 className="section-title">Trending Now</h2>
 
@@ -192,7 +203,7 @@ const Landing = () => {
                 <h3>{product.name}</h3>
                 <p className="price">
                   {product.oldPrice && <span className="old-price">₹{product.oldPrice}</span>}{' '}
-                  <span>₹{product.price}</span>
+                  <span>₹{getItemPrice(product)}</span>
                 </p>
               </Link>
             ))}
