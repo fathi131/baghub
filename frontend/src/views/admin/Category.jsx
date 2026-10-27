@@ -21,7 +21,7 @@ const Category = () => {
   const fetchCategories = async (page = 1, search = searchQuery) => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/admin/categories', {
+      const response = await axios.get('/admin/categories', {
         params: { page, limit: 5, search }
       });
       
@@ -65,7 +65,7 @@ const Category = () => {
       const token = localStorage.getItem('token'); 
 
       const response = await axios.patch(
-        `http://localhost:5000/api/admin/categories/toggle-status/${id}`,
+        `/admin/categories/toggle-status/${id}`,
         {},
         {
           headers: {

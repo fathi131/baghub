@@ -20,7 +20,7 @@ const EditCategory = () => {
      
       const fetchCategoryDetails = async () => {
         try {
-          const response = await axios.get(`http://localhost:5000/api/admin/categories/${id}`);
+          const response = await axios.get(`/admin/categories/${id}`);
           const data = response.data.category || response.data;
           setCategoryName(data.name || '');
           setDescription(data.description || '');
@@ -38,7 +38,7 @@ const EditCategory = () => {
 
     try {
       setLoading(true);
-      const response = await axios.put(`http://localhost:5000/api/admin/categories/${categoryId}`, {
+      const response = await axios.put(`/admin/categories/${categoryId}`, {
         name: categoryName,
         description: description,
       });

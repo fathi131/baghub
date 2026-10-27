@@ -66,7 +66,7 @@ const AddProduct = () => {
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
 
-  const BASE_URL = 'http://localhost:5000';
+  const BASE_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:5000';
 
   
   
@@ -74,7 +74,7 @@ const AddProduct = () => {
 useEffect(() => {
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/admin/categories');
+      const response = await axios.get('/admin/categories');
       
       const categoryData = response.data.data || response.data;
 

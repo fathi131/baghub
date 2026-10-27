@@ -19,7 +19,7 @@ const ForgotPassword = () => {
 
     try {
       // Backend API Call
-      const response = await axios.post('http://localhost:5000/api/user/forgot-password', { email });
+      const response = await axios.post('/user/forgot-password', { email });
 
       if (response.status === 200) {
         setSuccessMsg('OTP sent successfully!');

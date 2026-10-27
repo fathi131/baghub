@@ -5,7 +5,7 @@ const WishlistPage = () => {
   const [wishlist, setWishlist] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const BASE_URL = 'http://localhost:5000';
+  const BASE_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:5000';
 
   
   const getImageUrl = (imagePath) => {

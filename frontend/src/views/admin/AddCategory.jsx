@@ -30,7 +30,7 @@ const AddCategory = () => {
     try {
       setLoading(true);
 
-      const response = await axios.post('http://localhost:5000/api/admin/add-category', {
+      const response  = await axios.post('/admin/add-category', {
         name: trimmedName,
         description: trimmedDescription,
       });

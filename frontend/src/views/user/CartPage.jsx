@@ -7,15 +7,12 @@ const CartPage = () => {
   const navigate = useNavigate();
   const { cartItems, loading, fetchCart, removeFromCart, updateQuantity } = useCart();
 
-  
   useEffect(() => {
     if (fetchCart) fetchCart();
   }, []);
 
- 
-  const BASE_URL = 'http://localhost:5000';
+  const BASE_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:5000';
 
- 
   const getImageUrl = (imagePath) => {
     if (!imagePath) return 'https://via.placeholder.com/100?text=No+Image';
     let cleanPath = String(imagePath).replace(/\\/g, '/');
@@ -25,12 +22,26 @@ const CartPage = () => {
     return `${BASE_URL}${cleanPath}`;
   };
 
-  
-  const itemSubTotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const getItemPrice = (item) => {
+    let basePrice = Number(item.price || 0);
+    if (item.offer) {
+      if (item.offer.discountType === 'fixed') {
+        basePrice -= Number(item.offer.discountValue || 0);
+      } else {
+        const pctAmount = (basePrice * Number(item.offer.discountValue || 0)) / 100;
+        const discount = item.offer.maxDiscount > 0
+          ? Math.min(pctAmount, Number(item.offer.maxDiscount))
+          : pctAmount;
+        basePrice -= discount;
+      }
+    }
+    return Math.max(0, basePrice);
+  };
+
+  const itemSubTotal = cartItems.reduce((acc, item) => acc + getItemPrice(item) * item.quantity, 0);
   const shippingFee = 0;
   const grandTotal = itemSubTotal + shippingFee;
 
-  
   const hasOutOfStockItems = cartItems.some(
     (item) => item.stockCount <= 0 || item.isBlocked || item.isAvailable === false
   );
@@ -75,7 +86,6 @@ const CartPage = () => {
       <h1 className="cart-title">My Cart</h1>
 
       <div className="cart-content-layout">
-        
         <div className="cart-table-container">
           <div className="cart-header-row">
             <div>Product</div>
@@ -87,13 +97,10 @@ const CartPage = () => {
           {cartItems.map((item) => {
             const isOutOfStock = item.stockCount <= 0 || item.isBlocked || item.isAvailable === false;
             const maxAllowed = Math.min(item.stockCount || 5, item.maxQuantityLimit || 5);
-            
-           
             const targetProductId = item.productId || item._id;
 
             return (
               <div key={targetProductId} className="cart-item-row">
-                
                 <div className="cart-product-info">
                   <img
                     src={getImageUrl(item.image || item.images?.[0])}
@@ -118,23 +125,17 @@ const CartPage = () => {
                   </div>
                 </div>
 
-                
-                <div className="cart-item-price">₹{item.price}</div>
+                <div className="cart-item-price">₹{getItemPrice(item)}</div>
 
-                
                 <div className="cart-item-qty">
                   <div className="quantity-pill-control">
-                    
                     <button
                       onClick={() => updateQuantity(targetProductId, -1)}
                       disabled={item.quantity <= 1 || isOutOfStock}
                     >
                       -
                     </button>
-
                     <span>{item.quantity}</span>
-
-                    
                     <button
                       onClick={() => updateQuantity(targetProductId, 1)}
                       disabled={item.quantity >= maxAllowed || isOutOfStock}
@@ -144,14 +145,12 @@ const CartPage = () => {
                   </div>
                 </div>
 
-                
-                <div className="cart-item-total">₹{item.price * item.quantity}</div>
+                <div className="cart-item-total">₹{getItemPrice(item) * item.quantity}</div>
               </div>
             );
           })}
         </div>
 
-        
         <div className="order-summary-card">
           <h3 className="summary-heading">Order Summary</h3>
 

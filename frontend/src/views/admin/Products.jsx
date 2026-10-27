@@ -18,13 +18,13 @@ const Products = () => {
     limit: 5
   });
 
-  const BASE_URL = 'http://localhost:5000';
+  const BASE_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:5000';
 
   
   const fetchProducts = async (page = 1, search = searchQuery) => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('adminToken');
       const res = await axios.get(`${BASE_URL}/api/admin/products`, {
         params: { page, limit: 5, search },
         headers: {
@@ -63,7 +63,7 @@ const Products = () => {
   
   const handleToggleStatus = async (id) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('adminToken');
       const response = await axios.patch(
         `${BASE_URL}/api/admin/products/toggle-status/${id}`,
         {},

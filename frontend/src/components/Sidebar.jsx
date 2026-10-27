@@ -9,8 +9,8 @@ const Sidebar = () => {
   
   const handleLogout = () => {
    
-    localStorage.removeItem('token');
-    localStorage.removeItem('user'); 
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('adminUser'); 
 
     
     navigate('/admin/login',{replace:true}); 
@@ -53,7 +53,7 @@ const Sidebar = () => {
           <Link to="/admin/sales-report">Sales Report</Link>
         </li>
 
-        {/* Updated Logout Item with onClick */}
+        
         <li 
           className="logout-item" 
           onClick={handleLogout}

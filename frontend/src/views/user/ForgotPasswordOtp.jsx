@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import API from '../../api/axios';
-import './OtpVerification.css'; 
+import './OtpVerification.css';
 
 const ForgotPasswordOtp = () => {
   const [otp, setOtp] = useState(['', '', '', '']);
@@ -14,7 +14,6 @@ const ForgotPasswordOtp = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
- 
   const email = location.state?.email;
   const canResend = timer === 0;
 
@@ -38,6 +37,22 @@ const ForgotPasswordOtp = () => {
   const handleKeyDown = (index, e) => {
     if (e.key === 'Backspace' && !otp[index] && index > 0) {
       inputRefs.current[index - 1].focus();
+    }
+  };
+
+  // ✅ FIX: OTP paste handler (multi-digit)
+  const handlePaste = (e) => {
+    e.preventDefault();
+    const pastedData = e.clipboardData.getData('text');
+    const digits = pastedData.replace(/\D/g, '').slice(0, 4);
+    if (digits.length > 0) {
+      const newOtp = [...otp];
+      digits.split('').forEach((digit, i) => {
+        if (i < 4) newOtp[i] = digit;
+      });
+      setOtp(newOtp);
+      const nextIndex = Math.min(digits.length, 3);
+      inputRefs.current[nextIndex]?.focus();
     }
   };
 
@@ -94,7 +109,6 @@ const ForgotPasswordOtp = () => {
     setMessage('');
 
     try {
-     
       const response = await API.post('/user/forgot-password/verify-otp', {
         email,
         otp: enteredOtp
@@ -103,7 +117,9 @@ const ForgotPasswordOtp = () => {
       if (response.status === 200) {
         setMessage('OTP Verified successfully!');
         setTimeout(() => {
-          navigate('/reset-password', { state: { email, resetToken: response.data.resetToken } });
+          navigate('/reset-password', {
+            state: { email, resetToken: response.data.resetToken }
+          });
         }, 1000);
       }
     } catch (error) {
@@ -119,73 +135,64 @@ const ForgotPasswordOtp = () => {
   };
 
   return (
-    <div className="otp-page">
-      <header className="auth-navbar">
-        <nav className="nav-links">
-          <Link to="/">Home</Link>
-          <a href="#shop">Shop</a>
-          <a href="#contact">Contact Us</a>
-          <a href="#about">About Us</a>
-        </nav>
-        <div className="logo"><span>🎒 BagHub</span></div>
-        <div className="nav-icons"><span>🛒</span><span>👤</span><span>❤️</span></div>
-      </header>
+    <main className="otp-wrapper">
+      <div className="otp-card">
+        <h2 className="otp-title">Verify Your OTP</h2>
 
-      <main className="otp-wrapper">
-        <div className="otp-card">
-          <h2 className="otp-title">Verify Your OTP</h2>
+        {message && (
+          <p style={{ color: 'green', textAlign: 'center', fontSize: '14px', marginBottom: '10px' }}>
+            {message}
+          </p>
+        )}
+        {errorMsg && (
+          <p style={{ color: 'red', textAlign: 'center', fontSize: '14px', marginBottom: '10px' }}>
+            {errorMsg}
+          </p>
+        )}
 
-          {message && <p style={{ color: 'green', textAlign: 'center', fontSize: '14px', marginBottom: '10px' }}>{message}</p>}
-          {errorMsg && <p style={{ color: 'red', textAlign: 'center', fontSize: '14px', marginBottom: '10px' }}>{errorMsg}</p>}
-
-          <form onSubmit={handleSubmit}>
-            <div className="otp-grey-box">
-              <div className="otp-inputs-container">
-                {otp.map((digit, index) => (
-                  <input
-                    key={index}
-                    type="text"
-                    maxLength="1"
-                    value={digit}
-                    ref={(el) => (inputRefs.current[index] = el)}
-                    onChange={(e) => handleChange(index, e.target.value)}
-                    onKeyDown={(e) => handleKeyDown(index, e)}
-                    className="otp-input"
-                    required
-                  />
-                ))}
-              </div>
+        <form onSubmit={handleSubmit}>
+          <div className="otp-grey-box">
+            <div className="otp-inputs-container">
+              {otp.map((digit, index) => (
+                <input
+                  key={index}
+                  type="text"
+                  maxLength="1"
+                  value={digit}
+                  ref={(el) => (inputRefs.current[index] = el)}
+                  onChange={(e) => handleChange(index, e.target.value)}
+                  onKeyDown={(e) => handleKeyDown(index, e)}
+                  onPaste={handlePaste}
+                  className="otp-input"
+                  required
+                />
+              ))}
             </div>
+          </div>
 
-            <div className="otp-timer-row">
-              <span className="resend-text">
-                Didn't get the OTP?{' '}
-                <button
-                  type="button"
-                  className={`resend-btn ${!canResend || loading ? 'disabled' : ''}`}
-                  onClick={handleResend}
-                  disabled={!canResend || loading}
-                >
-                  {loading ? 'Sending...' : 'Resend OTP'}
-                </button>
-              </span>
-              <span className="timer-count">
-                00:{timer < 10 ? `0${timer}` : timer}
-              </span>
-            </div>
+          <div className="otp-timer-row">
+            <span className="resend-text">
+              Didn't get the OTP?{' '}
+              <button
+                type="button"
+                className={`resend-btn ${!canResend || loading ? 'disabled' : ''}`}
+                onClick={handleResend}
+                disabled={!canResend || loading}
+              >
+                {loading ? 'Sending...' : 'Resend OTP'}
+              </button>
+            </span>
+            <span className="timer-count">
+              00:{timer < 10 ? `0${timer}` : timer}
+            </span>
+          </div>
 
-            <button type="submit" className="otp-submit-btn" disabled={loading}>
-              {loading ? 'Verifying...' : 'Submit'}
-            </button>
-          </form>
-        </div>
-      </main>
-
-      <footer className="footer">
-        <div className="footer-logo"><h2>🎒 BagHub</h2></div>
-        <div className="footer-bottom"><p>© 2026 baghub . All Rights Reserved.</p></div>
-      </footer>
-    </div>
+          <button type="submit" className="otp-submit-btn" disabled={loading}>
+            {loading ? 'Verifying...' : 'Submit'}
+          </button>
+        </form>
+      </div>
+    </main>
   );
 };
 

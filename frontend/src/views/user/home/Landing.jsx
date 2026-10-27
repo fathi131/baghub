@@ -11,7 +11,7 @@ const Landing = () => {
   const [handPicked, setHandPicked] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const BASE_URL = 'http://localhost:5000';
+  const BASE_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:5000';
 
   const getImageUrl = (imagePath) => {
     if (!imagePath) return 'https://via.placeholder.com/300?text=No+Image';

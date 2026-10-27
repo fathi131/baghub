@@ -9,6 +9,7 @@ const OtpVerification = () => {
   const [timer, setTimer] = useState(60);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');  // ✅ NEW
 
   const inputRefs = useRef([]);
   const navigate = useNavigate();
@@ -43,7 +44,25 @@ const OtpVerification = () => {
     }
   };
 
-  // 1. Resend OTP
+  
+  const handlePaste = (e) => {
+    e.preventDefault();
+    const pastedData = e.clipboardData.getData('text');
+    const digits = pastedData.replace(/\D/g, '').slice(0, 4);
+    
+    if (digits.length > 0) {
+      const newOtp = [...otp];
+      digits.split('').forEach((digit, i) => {
+        if (i < 4) newOtp[i] = digit;
+      });
+      setOtp(newOtp);
+      
+      const nextIndex = Math.min(digits.length, 3);
+      inputRefs.current[nextIndex]?.focus();
+    }
+  };
+
+ 
   const handleResend = async () => {
     if (!canResend) return;
 
@@ -56,11 +75,9 @@ const OtpVerification = () => {
     try {
       setErrorMsg('');
       
-      const res = isEmailChange
-        ? await API.post('/user/send-email-otp', { newEmail })
-        : await axios.post('http://localhost:5000/api/user/resend-otp', { email: targetEmail });
-
-      alert(res.data.message || 'New OTP sent to your email!');
+      const res = await axios.post('/user/resend-otp', { email: targetEmail });
+      setSuccessMsg(res.data.message || 'New OTP sent to your email!');
+      setTimeout(() => setSuccessMsg(''), 3000);
       setTimer(60);
       setOtp(['', '', '', '']);
     } catch (err) {
@@ -68,7 +85,6 @@ const OtpVerification = () => {
     }
   };
 
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
     const enteredOtp = otp.join('');
@@ -87,22 +103,21 @@ const OtpVerification = () => {
 
         if (res.status === 200 || res.data.success) {
           localStorage.setItem('user', JSON.stringify(res.data.user));
-
-          alert('Email updated successfully!');
-          navigate('/profile');
+          setSuccessMsg('Email updated successfully!');
+          setTimeout(() => navigate('/profile'), 1500);
         }
       } else {
-        const res = await axios.post('http://localhost:5000/api/user/verify-otp', {
+        const res = await axios.post('/user/verify-otp', {
           email: newEmail,
           otp: enteredOtp
         });
 
         if (res.status === 200) {
-          alert('Verification Successful!');
+          setSuccessMsg('Verification Successful!');
           if (res.data.token) {
             localStorage.setItem('token', res.data.token);
           }
-          navigate('/login');
+          setTimeout(() => navigate('/login'), 1500);
         }
       }
     } catch (err) {
@@ -121,6 +136,7 @@ const OtpVerification = () => {
         </p>
 
         {errorMsg && <p style={{ color: 'red', textAlign: 'center', fontSize: '14px' }}>{errorMsg}</p>}
+        {successMsg && <p style={{ color: 'green', textAlign: 'center', fontSize: '14px' }}>{successMsg}</p>}
 
         <form onSubmit={handleSubmit}>
           <div className="otp-grey-box">
@@ -134,6 +150,7 @@ const OtpVerification = () => {
                   ref={(el) => (inputRefs.current[index] = el)}
                   onChange={(e) => handleChange(index, e.target.value)}
                   onKeyDown={(e) => handleKeyDown(index, e)}
+                  onPaste={handlePaste}
                   className="otp-input"
                   required
                 />

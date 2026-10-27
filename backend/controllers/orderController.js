@@ -4,6 +4,7 @@ const User = require('../models/userModel');
 const Offer = require('../models/Offer');
 const Cart = require('../models/Cart'); 
 const PDFDocument = require('pdfkit');
+const { getApplicableOffer } = require('./offerController');
 
 const createOrderId = () => `ORD-${Date.now().toString().slice(-6)}${Math.random().toString(36).slice(2, 5).toUpperCase()}`;
 
@@ -140,8 +141,24 @@ const createOrder = async (req, res) => {
       }
 
       const quantity = Number(item.quantity || 1);
-      const price = Number(product.price || 0);
-      const total = price * quantity;
+
+      const offer = await getApplicableOffer(product._id, product.category, product.price);
+      let finalPrice = Number(product.price || 0);
+
+      if (offer) {
+        if (offer.discountType === 'fixed') {
+          finalPrice -= Number(offer.discountValue || 0);
+        } else {
+          const pctAmount = (finalPrice * Number(offer.discountValue || 0)) / 100;
+          const discount = offer.maxDiscount > 0
+            ? Math.min(pctAmount, Number(offer.maxDiscount))
+            : pctAmount;
+          finalPrice -= discount;
+        }
+        finalPrice = Math.max(0, finalPrice);
+      }
+
+      const total = finalPrice * quantity;
 
       calculatedSubtotal += total;
       normalizedItems.push({
@@ -149,7 +166,7 @@ const createOrder = async (req, res) => {
         name: product.name,
         image: product.images?.[0] || '',
         quantity,
-        price,
+        price: finalPrice,
         total
       });
     }
@@ -272,6 +289,58 @@ const cancelUserOrder = async (req, res) => {
   }
 };
 
+const cancelOrderItem = async (req, res) => {
+  try {
+    const userId = req.user?._id || req.user?.id;
+    const { id, itemId } = req.params;
+    const { reason = '' } = req.body;
+
+    const order = await Order.findOne({ _id: id, userId });
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    if (['cancelled', 'delivered', 'return requested', 'returned'].includes(order.status)) {
+      return res.status(400).json({ message: `Cannot cancel items in a ${order.status} order.` });
+    }
+
+    const itemIndex = order.items.findIndex((item) => item._id.toString() === itemId);
+    if (itemIndex === -1) {
+      return res.status(404).json({ message: 'Item not found in this order' });
+    }
+
+    const item = order.items[itemIndex];
+
+    await Product.findByIdAndUpdate(item.productId, { $inc: { stockCount: item.quantity } });
+
+    order.items.splice(itemIndex, 1);
+
+    if (order.items.length > 0) {
+      let newSubtotal = 0;
+      order.items.forEach((i) => {
+        newSubtotal += Number(i.price) * Number(i.quantity);
+      });
+      order.subtotal = newSubtotal;
+      order.totalAmount = Math.max(0, newSubtotal + Number(order.tax || 0) + Number(order.shippingFee || 0) - Number(order.discount || 0));
+    } else {
+      order.status = 'cancelled';
+      order.subtotal = 0;
+      order.totalAmount = 0;
+    }
+
+    order.cancelReason = reason;
+    await order.save();
+
+    if (item.total > 0) {
+      await creditWalletForUser(userId, item.total, 'Item cancellation refund', order.orderId);
+    }
+
+    res.status(200).json({ success: true, message: 'Item cancelled successfully', order });
+  } catch (error) {
+    res.status(500).json({ message: 'Error cancelling item', error: error.message });
+  }
+};
+
 const returnUserOrder = async (req, res) => {
   try {
     const userId = req.user?._id || req.user?.id;
@@ -319,7 +388,6 @@ const getAdminOrderById = async (req, res) => {
     return res.status(400).json({ message: 'Invalid order ID' });
   }
 };
-
 const updateOrderStatus = async (req, res) => {
   try {
     const { id } = req.params;
@@ -335,13 +403,26 @@ const updateOrderStatus = async (req, res) => {
       return res.status(404).json({ message: 'Order not found' });
     }
 
+    const previousStatus = order.status;
     order.status = status;
+
     if (status === 'delivered') {
       order.deliveredAt = order.deliveredAt || new Date();
     }
 
-    if (status === 'returned' && order.totalAmount > 0) {
-      await creditWalletForUser(order.userId, order.totalAmount, 'Return refund approved', order.orderId);
+    
+    if (status === 'returned' && previousStatus !== 'returned') {
+      
+      await Promise.all(
+        order.items.map((item) =>
+          Product.findByIdAndUpdate(item.productId, { $inc: { stockCount: item.quantity } })
+        )
+      );
+
+     
+      if (order.totalAmount > 0) {
+        await creditWalletForUser(order.userId, order.totalAmount, 'Return refund approved', order.orderId);
+      }
     }
 
     await order.save();
@@ -359,7 +440,6 @@ const updateOrderStatus = async (req, res) => {
     res.status(500).json({ message: 'Error updating order status', error: error.message });
   }
 };
-
 
 const downloadInvoice = async (req, res) => {
   try {
@@ -440,6 +520,7 @@ module.exports = {
   getUserOrders,
   getUserOrderById,
   cancelUserOrder,
+  cancelOrderItem,
   returnUserOrder,
   getAllOrders,
   getAdminOrderById,

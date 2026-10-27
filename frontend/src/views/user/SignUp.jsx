@@ -90,7 +90,7 @@ const SignUp = () => {
     try {
       setLoading(true);
       
-      const res = await API.post('http://localhost:5000/api/user/signup', {
+      const res = await API.post('/user/signup', {
         name: formData.username,
         email: formData.email,
         password: formData.password,

@@ -12,10 +12,11 @@ const AdminLogin = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    
+    const adminToken = localStorage.getItem('adminToken');
+    const adminUser = JSON.parse(localStorage.getItem('adminUser') || '{}');
 
-    if (token && (user.isAdmin || user.role === 'admin')) {
+    if (adminToken && (adminUser.isAdmin || adminUser.role === 'admin')) {
       navigate('/admin/dashboard', { replace: true });
     }
   }, [navigate]);
@@ -28,7 +29,7 @@ const AdminLogin = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5000/api/admin/login', {
+      const response = await axios.post('/admin/login', {
         email: credentials.email,
         password: credentials.password
       });
@@ -37,12 +38,11 @@ const AdminLogin = () => {
 
       if (user && (user.isAdmin || user.role === 'admin')) {
         
-        localStorage.setItem('token', token);
-        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('adminToken', token);
+        localStorage.setItem('adminUser', JSON.stringify(user));
 
         alert('Admin Login Successful!');
 
-        
         navigate('/admin/dashboard', { replace: true });
       } else {
         alert('Access Denied: You do not have Admin privileges!');
@@ -55,13 +55,10 @@ const AdminLogin = () => {
 
   return (
     <div className="admin-login-wrapper">
-      
       <div className="admin-brand-logo">
         <span className="bag-icon">🛍️</span>
         <span className="brand-title">BagHub</span>
       </div>
-
-      
       <div className="admin-login-card">
         <form onSubmit={handleSubmit} className="admin-login-form">
           <div className="form-group">
@@ -75,7 +72,6 @@ const AdminLogin = () => {
               required
             />
           </div>
-
           <div className="form-group">
             <label htmlFor="password">Password</label>
             <input
@@ -87,18 +83,14 @@ const AdminLogin = () => {
               required
             />
           </div>
-
           <div className="forgot-password-link">
             <Link to="/admin/forgot-password">Forgot Password?</Link>
           </div>
-
           <button type="submit" className="admin-login-btn">
             Login
           </button>
         </form>
       </div>
-
-      
       <footer className="admin-login-footer">
         <p>© 2026 baghub . All Rights Reserved.</p>
       </footer>

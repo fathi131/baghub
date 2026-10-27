@@ -36,6 +36,23 @@ const OrderDetailsPage = () => {
     }
   };
 
+    const handleCancelItem = async (itemId) => {
+    if (!reason.trim()) {
+      alert('Please provide a reason for cancellation.');
+      return;
+    }
+
+    try {
+      const confirmed = window.confirm('Are you sure you want to cancel this item?');
+      if (!confirmed) return;
+
+      await API.patch(`/user/orders/${id}/cancel-item/${itemId}`, { reason });
+      window.location.reload();
+    } catch (error) {
+      alert(error.response?.data?.message || 'Failed to cancel item');
+    }
+  };
+
   const handleReturnOrder = async () => {
     if (!reason.trim()) {
       alert('Please provide a return reason.');
@@ -56,7 +73,7 @@ const OrderDetailsPage = () => {
     if (cleanPath.startsWith('http://') || cleanPath.startsWith('https://')) return cleanPath;
     const normalizedPath = cleanPath.startsWith('/') ? cleanPath : `/${cleanPath}`;
     const finalPath = normalizedPath.includes('/uploads/') ? normalizedPath : `/uploads${normalizedPath}`;
-    return `http://localhost:5000${finalPath}`;
+    return `${import.meta.env.VITE_SERVER_URL || 'http://localhost:5000'}${finalPath}`;
   };
 
   const handleDownloadInvoice = async () => {
@@ -161,7 +178,7 @@ if (!order) return <div className="loading-text">Order not found.</div>;
   </div>
 
   {!['cancelled', 'returned', 'delivered', 'return requested'].includes(order.status) && (
-    <button className="btn-cancel" onClick={handleCancelOrder}>Cancel</button>
+    <button className="btn-cancel" onClick={()=>handleCancelItem(item._id)}>Cancel</button>
   )}
 
   {order.status === 'delivered' && (

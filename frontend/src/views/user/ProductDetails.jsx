@@ -17,19 +17,17 @@ const ProductDetails = () => {
   const [isInWishlist, setIsInWishlist] = useState(false);
   const [zoomStyle, setZoomStyle] = useState({ transformOrigin: 'center center' });
 
- 
   const [variants, setVariants] = useState([]);
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
   const [selectedVariant, setSelectedVariant] = useState(null);
 
-  
   const [reviews, setReviews] = useState([]);
   const [avgRating, setAvgRating] = useState(0);
   const [reviewCount, setReviewCount] = useState(0);
   const [distribution, setDistribution] = useState({ 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 });
 
-  const BASE_URL = 'http://localhost:5000';
+  const BASE_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:5000';
 
   const getImageUrl = (imagePath) => {
     if (!imagePath) return 'https://via.placeholder.com/500x500?text=No+Image';
@@ -40,7 +38,6 @@ const ProductDetails = () => {
     return `${BASE_URL}${cleanPath}`;
   };
 
-  
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
@@ -76,7 +73,6 @@ const ProductDetails = () => {
     if (id) fetchProductDetails();
   }, [id, navigate]);
 
-  
   useEffect(() => {
     const fetchVariants = async () => {
       try {
@@ -93,14 +89,11 @@ const ProductDetails = () => {
           }
         }
       } catch (error) {
-        // Silent fail
       }
     };
     if (id) fetchVariants();
-   
   }, [id]);
 
-  
   useEffect(() => {
     const fetchReviews = async () => {
       try {
@@ -120,7 +113,6 @@ const ProductDetails = () => {
   const uniqueSizes = [...new Set(variants.map((v) => v.size).filter(Boolean))];
   const uniqueColors = [...new Set(variants.map((v) => v.color).filter(Boolean))];
 
-  
   useEffect(() => {
     if (variants.length === 0) return;
 
@@ -153,6 +145,19 @@ const ProductDetails = () => {
   const isOutOfStock = currentStock <= 0;
   const hasVariants = variants.length > 0;
 
+  let offerDiscount = 0;
+  if (product?.offer) {
+    if (product.offer.discountType === 'fixed') {
+      offerDiscount = Number(product.offer.discountValue || 0);
+    } else {
+      const pctAmount = (currentPrice * Number(product.offer.discountValue || 0)) / 100;
+      offerDiscount = product.offer.maxDiscount > 0
+        ? Math.min(pctAmount, Number(product.offer.maxDiscount))
+        : pctAmount;
+    }
+  }
+  const finalPrice = Math.max(0, currentPrice - offerDiscount);
+
   const handleQuantityChange = (type) => {
     if (type === 'decrease' && quantity > 1) setQuantity(quantity - 1);
     else if (type === 'increase' && quantity < currentStock) setQuantity(quantity + 1);
@@ -163,7 +168,7 @@ const ProductDetails = () => {
       ...product,
       _id: product?._id || id,
       productId: product?._id || id,
-      price: currentPrice,
+      price: finalPrice,
       image: getImageUrl(selectedImage || product?.images?.[0] || product?.image),
       images: product?.images?.length ? product.images : product?.image ? [product.image] : [],
       variantId: selectedVariant?._id || null,
@@ -262,7 +267,6 @@ const ProductDetails = () => {
 
   return (
     <div className="product-details-container">
-      
       <div className="breadcrumbs">
         <span className="breadcrumb-link" onClick={() => navigate('/')}>
           Home
@@ -279,9 +283,7 @@ const ProductDetails = () => {
         <span className="breadcrumb-active">{product.name}</span>
       </div>
 
-      
       <div className="product-details-main">
-        
         <div className="product-gallery">
           <div className="thumbnail-list">
             {imageList.map((img, index) => (
@@ -304,7 +306,6 @@ const ProductDetails = () => {
           </div>
         </div>
 
-        
         <div className="product-info-section">
           <div className="product-title-header">
             <h1>{product.name}</h1>
@@ -322,7 +323,7 @@ const ProductDetails = () => {
           </div>
 
           <div className="price-container-detail">
-            <span className="current-price-detail">₹{currentPrice}</span>
+            <span className="current-price-detail">₹{finalPrice}</span>
             {currentOldPrice > 0 && (
               <span className="original-price-detail">₹{currentOldPrice}</span>
             )}
@@ -374,7 +375,6 @@ const ProductDetails = () => {
             )}
           </div>
 
-          
           {hasVariants && (
             <div
               className="variant-selector"
@@ -524,7 +524,6 @@ const ProductDetails = () => {
         </div>
       </div>
 
-      
       <section
         className="product-reviews-section"
         style={{ marginTop: '40px', padding: '20px', borderTop: '2px solid #eee' }}
@@ -674,4 +673,4 @@ const ProductDetails = () => {
   );
 };
 
-export default ProductDetails; 
+export default ProductDetails;

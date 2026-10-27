@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import API from '../../api/axios';
 import { useCart } from '../../context/CartContext';
@@ -25,7 +25,12 @@ const PaymentPage = () => {
 
   const totalAmount = Number(grandTotal || subTotal || 0);
 
-  
+  useEffect(() => {
+    if (!shippingAddress || cartItems.length === 0) {
+      navigate('/checkout', { replace: true });
+    }
+  }, [shippingAddress, cartItems, navigate]);
+
   const loadRazorpayScript = () => {
     return new Promise((resolve, reject) => {
       if (window.Razorpay) return resolve(true);
@@ -68,12 +73,10 @@ const PaymentPage = () => {
     return res.data;
   };
 
-  
   const handleRazorpayPayment = async () => {
     try {
       await loadRazorpayScript();
 
-      
       const { data } = await API.post('/razorpay/create-order', {
         amount: totalAmount
       });
@@ -82,7 +85,6 @@ const PaymentPage = () => {
         throw new Error('Failed to create Razorpay order');
       }
 
-     
       return new Promise((resolve, reject) => {
         const options = {
           key: data.keyId,
@@ -94,7 +96,6 @@ const PaymentPage = () => {
           image: 'https://via.placeholder.com/100?text=BagHub',
           handler: async (response) => {
             try {
-              
               const verifyRes = await API.post('/razorpay/verify', {
                 razorpay_order_id: response.razorpay_order_id,
                 razorpay_payment_id: response.razorpay_payment_id,
@@ -105,7 +106,6 @@ const PaymentPage = () => {
                 throw new Error('Payment verification failed');
               }
 
-              
               const orderRes = await createOrderInDB({
                 razorpayOrderId: response.razorpay_order_id,
                 razorpayPaymentId: response.razorpay_payment_id,
@@ -130,6 +130,7 @@ const PaymentPage = () => {
         const rzp = new window.Razorpay(options);
 
         rzp.on('payment.failed', (response) => {
+         
           reject(new Error(response.error?.description || 'Payment failed'));
         });
 
@@ -152,10 +153,8 @@ const PaymentPage = () => {
       let orderResponse;
 
       if (paymentMode === 'RazorPay') {
-        
         orderResponse = await handleRazorpayPayment();
       } else {
-       
         orderResponse = await createOrderInDB();
       }
 
@@ -179,7 +178,15 @@ const PaymentPage = () => {
       console.error('Place order error:', error);
       navigate('/payment-failed', {
         state: {
-          errorMessage: error.response?.data?.message || error.message || 'Failed to place order. Please try again.'
+          errorMessage: error.response?.data?.message || error.message || 'Failed to place order. Please try again.',
+          shippingAddress,
+          cartItems,
+          subTotal,
+          tax,
+          discount,
+          shippingFee,
+          grandTotal,
+          appliedCoupon
         }
       });
     } finally {

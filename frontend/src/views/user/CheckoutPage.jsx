@@ -48,7 +48,33 @@ const CheckoutPage = () => {
     fetchAddresses();
   }, []);
 
-  const subTotal = cartItems.reduce((acc, item) => acc + Number(item.price || 0) * Number(item.quantity || 1), 0);
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return 'https://via.placeholder.com/80';
+    const cleanPath = String(imagePath).replace(/\\/g, '/');
+    if (cleanPath.startsWith('http://') || cleanPath.startsWith('https://')) return cleanPath;
+    const normalizedPath = cleanPath.startsWith('/') ? cleanPath : `/${cleanPath}`;
+    const finalPath = normalizedPath.includes('/uploads/') ? normalizedPath : `/uploads${normalizedPath}`;
+    return `${import.meta.env.VITE_SERVER_URL || 'http://localhost:5000'}${finalPath}`;
+  };
+
+  const getItemPrice = (item) => {
+    let basePrice = Number(item.price || item.product?.price || 0);
+    if (item.offer) {
+      if (item.offer.discountType === 'fixed') {
+        basePrice -= Number(item.offer.discountValue || 0);
+      } else {
+        const pctAmount = (basePrice * Number(item.offer.discountValue || 0)) / 100;
+        const discount = item.offer.maxDiscount > 0
+          ? Math.min(pctAmount, Number(item.offer.maxDiscount))
+          : pctAmount;
+        basePrice -= discount;
+      }
+    }
+    return Math.max(0, basePrice);
+  };
+
+  const subTotal = cartItems.reduce((acc, item) => acc + getItemPrice(item) * (item.quantity || 1), 0);
+
   const shipping = 0;
   const tax = Math.round(subTotal * 0.05);
   const discount = appliedCoupon ? Number(appliedCoupon.discountAmount || 0) : 0;
@@ -74,8 +100,13 @@ const CheckoutPage = () => {
         couponCode: couponCode.trim(),
         orderAmount: subTotal
       });
-      setAppliedCoupon(res.data.coupon);
-      setCouponCode('');
+
+      if (res.data && res.data.coupon) {
+        setAppliedCoupon(res.data.coupon);
+        setCouponCode('');
+      } else {
+        setCouponError('Invalid response from server.');
+      }
     } catch (err) {
       setCouponError(err.response?.data?.message || 'Invalid or expired coupon code.');
     } finally {
@@ -202,13 +233,21 @@ const CheckoutPage = () => {
               ) : (
                 cartItems.map((item) => (
                   <div key={item.productId || item._id} className="checkout-item-row" style={{ display: 'flex', gap: '12px', alignItems: 'center', border: '1px solid #eee', padding: '10px', borderRadius: '10px', marginBottom: '10px' }}>
-                    <img src={item.image || item.images?.[0] || 'https://via.placeholder.com/80'} alt={item.name} style={{ width: '70px', height: '70px', objectFit: 'cover', borderRadius: '8px' }} />
+                    <img 
+                      src={getImageUrl(item.image || item.images?.[0])} 
+                      alt={item.name} 
+                      style={{ width: '70px', height: '70px', objectFit: 'cover', borderRadius: '8px' }} 
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = 'https://via.placeholder.com/80';
+                      }}
+                    />
                     <div style={{ flex: 1 }}>
                       <strong>{item.name}</strong>
                       <p style={{ margin: '4px 0', color: '#555' }}>Qty: {item.quantity}</p>
                     </div>
                     <div style={{ textAlign: 'right' }}>
-                      <strong>₹{(Number(item.price || 0) * Number(item.quantity || 1))}</strong>
+                      <strong>₹{(Number(getItemPrice(item)) * Number(item.quantity || 1))}</strong>
                     </div>
                   </div>
                 ))
@@ -260,9 +299,17 @@ const CheckoutPage = () => {
 
             <div className="coupon-container" style={{ margin: '15px 0' }}>
               {!appliedCoupon ? (
-                <form onSubmit={handleApplyCoupon} className="coupon-input-box">
-                  <input type="text" placeholder="Coupon code" value={couponCode} onChange={(e) => setCouponCode(e.target.value)} />
-                  <button type="submit" disabled={couponLoading}>{couponLoading ? '...' : 'Apply'}</button>
+                <form onSubmit={handleApplyCoupon} className="coupon-input-box" style={{ display: 'flex', gap: '10px' }}>
+                  <input 
+                    type="text" 
+                    placeholder="Coupon code" 
+                    value={couponCode} 
+                    onChange={(e) => setCouponCode(e.target.value)} 
+                    style={{ flex: 1, padding: '8px' }}
+                  />
+                  <button type="submit" disabled={couponLoading} style={{ padding: '8px 16px', background: '#2e7d32', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+                    {couponLoading ? '...' : 'Apply'}
+                  </button>
                 </form>
               ) : (
                 <div className="applied-coupon-box" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#e8f5e9', padding: '8px 12px', borderRadius: '4px' }}>

@@ -45,6 +45,7 @@ const {
   getUserOrders,
   getUserOrderById,
   cancelUserOrder,
+  cancelOrderItem,
   returnUserOrder,
    downloadInvoice
 } = require('../controllers/orderController');
@@ -105,6 +106,7 @@ router.post('/orders', isUser, createOrder);
 router.get('/orders', isUser, getUserOrders);
 router.get('/orders/:id', isUser, getUserOrderById);
 router.patch('/orders/:id/cancel', isUser, cancelUserOrder);
+router.patch('/orders/:id/cancel-item/:itemId', isUser, cancelOrderItem);
 router.patch('/orders/:id/return', isUser, returnUserOrder);
 router.get('/orders/:id/invoice', isUser, downloadInvoice); 
 

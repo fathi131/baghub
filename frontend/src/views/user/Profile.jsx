@@ -4,7 +4,7 @@ import API from '../../api/axios';
 import './Profile.css';
 
 const getProfileImageUrl = (image) => (
-  image?.startsWith('http') ? image : image ? `http://localhost:5000${image}` : ''
+ image?.startsWith('http') ? image : image ? `${import.meta.env.VITE_SERVER_URL || 'http://localhost:5000'}${image}` : ''
 );
 
 const Profile = () => {

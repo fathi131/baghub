@@ -32,7 +32,7 @@ const ViewReturnOrderPage = () => {
     if (cleanPath.startsWith('http://') || cleanPath.startsWith('https://')) return cleanPath;
     const normalizedPath = cleanPath.startsWith('/') ? cleanPath : `/${cleanPath}`;
     const finalPath = normalizedPath.includes('/uploads/') ? normalizedPath : `/uploads${normalizedPath}`;
-    return `http://localhost:5000${finalPath}`;
+    return `${import.meta.env.VITE_SERVER_URL || 'http://localhost:5000'}${finalPath}`;
   };
 
   if (loading) return <div className="loading-text">Loading return order details...</div>;
