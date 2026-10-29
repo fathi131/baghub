@@ -21,6 +21,8 @@ const CategoryPage = () => {
   const [maxPriceInput, setMaxPriceInput] = useState('');
   const [activeMinPrice, setActiveMinPrice] = useState('');
   const [activeMaxPrice, setActiveMaxPrice] = useState('');
+  const [page, setPage] = useState(1);
+const [hasMore, setHasMore] = useState(true);
 
   const BASE_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:5000';
 
@@ -35,42 +37,33 @@ const CategoryPage = () => {
     return `${BASE_URL}${cleanPath}`;
   };
 
-  
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-
-       
-        const prodRes = await API.get('/user/products');
-        const productData = prodRes.data?.data || (Array.isArray(prodRes.data) ? prodRes.data : []);
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const prodRes = await API.get('/user/products', {
+        params: { page, limit: 8 }
+      });
+      const productData = prodRes.data?.data || [];
+      
+      if (page === 1) {
         setProducts(productData);
-
-        
-        try {
-          const catRes = await API.get('/user/categories');
-          const catData = catRes.data?.data || (Array.isArray(catRes.data) ? catRes.data : []);
-          setCategories(catData.map(c => c.name || c));
-        } catch {
-          
-          const extractedCats = [...new Set(productData.map(p => p.category?.name || p.category).filter(Boolean))];
-          setCategories(extractedCats);
-        }
-
-        
-        const extractedBrands = [...new Set(productData.map(p => p.brand).filter(Boolean))];
-        setBrands(extractedBrands);
-
-      } catch (error) {
-        console.error('Error loading category page data:', error);
-      } finally {
-        setLoading(false);
+      } else {
+        setProducts(prev => [...prev, ...productData]);
       }
-    };
 
-    fetchData();
-  }, []);
+      if (productData.length < 8) setHasMore(false);
 
+     
+    } catch (error) {
+      console.error('Error loading data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchData();
+}, [page]);
+  
   const handleCategoryChange = (cat) => {
     setSelectedCategories(prev =>
       prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]
@@ -271,7 +264,7 @@ const CategoryPage = () => {
           )}
 
           <div className="pagination-container">
-            <button className="btn-load-more">Load More</button>
+            <button className="btn-load-more" onClick={()=>setPage(prev=>prev+1)}>Load More</button>
           </div>
         </div>
       </div>

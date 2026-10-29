@@ -76,7 +76,7 @@ const EditProduct = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('adminToken');
         const res = await axios.get(`${BASE_URL}/api/admin/categories`, {
           headers: { Authorization: `Bearer ${token}` }
         });
@@ -166,7 +166,7 @@ const EditProduct = () => {
     }
 
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('adminToken');
       const productId = id || existingProduct._id;
 
       const data = new FormData();

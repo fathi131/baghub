@@ -158,7 +158,7 @@ useEffect(() => {
     }
 
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('adminToken');
 
       const data = new FormData();
       data.append('name', formData.productName);
@@ -173,7 +173,7 @@ useEffect(() => {
         data.append('images', imgBlob, imgBlob.name);
       });
 
-      const response = await axios.post(`${BASE_URL}/api/admin/products`, data, {
+      const response = await API.post('/admin/products', data, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${token}`

@@ -838,13 +838,13 @@ const deleteAddress = async (req, res) => {
   }
 };
 
-// 🛒 User Side Product Listing (Enhanced Search, Category, Filter, Sort, Pagination)
+
   
 const getProducts = async (req, res) => {
   try {
     const {
       search = '',
-      category = '', // Can be Category ID, Category Name, or comma-separated names/IDs
+      category = '', 
       minPrice,
       maxPrice,
       brand = '',
@@ -853,7 +853,7 @@ const getProducts = async (req, res) => {
       limit = 8
     } = req.query;
 
-    // 1. Unlisted / Blocked Products & Categories Filter
+   
     
     const activeCategories = await Category.find({
       isBlocked: false,
@@ -1088,7 +1088,7 @@ const getProductDetails = async (req, res) => {
         offer: productOffer,
         stockStatus,
         isOutOfStock: product.stockCount <= 0,
-        // Breadcrumbs formatting for frontend
+        
         breadcrumbs: [
           { name: 'Home', url: '/' },
           { name: 'Products', url: '/products' },
