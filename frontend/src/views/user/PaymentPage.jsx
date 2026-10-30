@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import API from '../../api/axios';
 import { useCart } from '../../context/CartContext';
 import './PaymentPage.css';
+import { toast } from 'react-toastify';
 
 const PaymentPage = () => {
   const navigate = useNavigate();
@@ -144,7 +145,7 @@ const PaymentPage = () => {
 
   const handlePlaceOrder = async () => {
     if (!shippingAddress || !cartItems.length) {
-      alert('Please select a shipping address and cart items.');
+      toast.info('Please select a shipping address and cart items.');
       return;
     }
 

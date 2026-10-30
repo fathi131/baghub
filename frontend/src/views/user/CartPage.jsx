@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import './CartPage.css';
+import { toast } from 'react-toastify';
 
 const CartPage = () => {
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ const CartPage = () => {
 
   const handleCheckout = () => {
     if (hasOutOfStockItems) {
-      alert('Please remove Out of Stock or Unavailable items before proceeding to checkout.');
+      toast.info('Please remove Out of Stock or Unavailable items before proceeding to checkout.');
       return;
     }
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import './AdminLogin.css';
+import { toast } from 'react-toastify';
 
 const AdminLogin = () => {
   const [credentials, setCredentials] = useState({
@@ -41,15 +42,15 @@ const AdminLogin = () => {
         localStorage.setItem('adminToken', token);
         localStorage.setItem('adminUser', JSON.stringify(user));
 
-        alert('Admin Login Successful!');
+        toast.success('Admin Login Successful!');
 
         navigate('/admin/dashboard', { replace: true });
       } else {
-        alert('Access Denied: You do not have Admin privileges!');
+        toast.error('Access Denied: You do not have Admin privileges!');
       }
     } catch (error) {
       console.error('Admin Login Error:', error);
-      alert(error.response?.data?.message || 'Invalid Admin Credentials!');
+      toast.error(error.response?.data?.message || 'Invalid Admin Credentials!');
     }
   };
 

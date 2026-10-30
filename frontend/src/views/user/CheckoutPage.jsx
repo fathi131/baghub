@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import API from '../../api/axios';
 import { useCart } from '../../context/CartContext';
 import './CheckoutPage.css';
+import { toast } from 'react-toastify';
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
@@ -149,7 +150,7 @@ const CheckoutPage = () => {
       await fetchAddresses();
     } catch (error) {
       console.error('Error saving address:', error);
-      alert(error.response?.data?.message || 'Unable to save address');
+      toast.error(error.response?.data?.message || 'Unable to save address');
     }
   };
 
@@ -170,11 +171,11 @@ const CheckoutPage = () => {
 
   const handleProceedToPayment = () => {
     if (!selectedAddressId) {
-      alert('Please select a shipping address!');
+      toast.info('Please select a shipping address!');
       return;
     }
     if (cartItems.length === 0) {
-      alert('Your cart is empty!');
+      toast.info('Your cart is empty!');
       return;
     }
 

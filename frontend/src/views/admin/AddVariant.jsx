@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import API from '../../api/axios';
 import './AddVariant.css';
+import { toast } from 'react-toastify';
 
 const AddVariant = () => {
   const { productId: urlProductId } = useParams();
@@ -49,11 +50,11 @@ const AddVariant = () => {
     e.preventDefault();
 
     if (!productId) {
-      alert('Please select a product');
+      toast.info('Please select a product');
       return;
     }
     if (!formData.price || Number(formData.price) <= 0) {
-      alert('Price is required');
+      toast.error('Price is required');
       return;
     }
 
@@ -69,7 +70,7 @@ const AddVariant = () => {
         stockCount: Number(formData.stockCount) || 0
       });
 
-      alert('Variant added successfully!');
+      toast.success('Variant added successfully!');
       setVariants(res.data?.variants || []);
       setFormData({
         size: '',
@@ -82,7 +83,7 @@ const AddVariant = () => {
       });
     } catch (error) {
       console.error('Add variant error:', error);
-      alert(error.response?.data?.message || 'Failed to add variant');
+      toast.error(error.response?.data?.message || 'Failed to add variant');
     } finally {
       setLoading(false);
     }
@@ -94,9 +95,9 @@ const AddVariant = () => {
     try {
       await API.delete(`/admin/products/${productId}/variants/${variantId}`);
       setVariants((prev) => prev.filter((v) => v._id !== variantId));
-      alert('Variant deleted');
+      toast.success('Variant deleted');
     } catch (error) {
-      alert(error.response?.data?.message || 'Failed to delete variant');
+      toast.error(error.response?.data?.message || 'Failed to delete variant');
     }
   };
 

@@ -9,6 +9,7 @@ import {
 } from '../../services/socialAuth';
 import { hasValidAuthToken } from '../../services/authSession';
 import './Login.css';
+import { toast } from 'react-toastify';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -40,7 +41,7 @@ const Login = () => {
         navigate('/home', { replace: true });
       } catch (err) {
         console.error('Google User Info Error:', err);
-        alert(err.response?.data?.message || err.message || 'Google login failed');
+        toast.error(err.response?.data?.message || err.message || 'Google login failed');
       }
     },
     onError: (error) => console.log('Google Login Failed:', error)
@@ -66,7 +67,7 @@ const Login = () => {
       }
     } catch (error) {
       console.error('Login Error:', error);
-      alert(error.response?.data?.message || 'Login failed. Please check your credentials.');
+      toast.error(error.response?.data?.message || 'Login failed. Please check your credentials.');
     }
   };
 
@@ -76,7 +77,7 @@ const Login = () => {
       persistUserSession(session);
       navigate('/home', { replace: true });
     } catch (err) {
-      alert(err.response?.data?.message || err.message || 'Facebook login failed');
+      toast.error(err.response?.data?.message || err.message || 'Facebook login failed');
     }
   };
 

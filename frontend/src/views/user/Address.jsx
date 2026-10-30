@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import API from '../../api/axios'; 
 import './Address.css';
+import { toast } from 'react-toastify';
 
 const Address = () => {
   const navigate = useNavigate();
@@ -54,7 +55,7 @@ useEffect(() => {
       setAddresses((prev) => prev.filter((addr) => (addr._id || addr.id) !== id));
     } catch (error) {
       console.error('Error deleting address:', error);
-      alert(error.response?.data?.message || 'Failed to delete address');
+      toast.error(error.response?.data?.message || 'Failed to delete address');
     }
   };
 

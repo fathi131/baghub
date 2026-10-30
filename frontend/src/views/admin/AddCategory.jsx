@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './AddCategory.css';
+import { toast } from 'react-toastify';
 
 const AddCategory = () => {
   const [categoryName, setCategoryName] = useState('');
@@ -36,7 +37,7 @@ const AddCategory = () => {
       });
 
       if (response.status === 200 || response.status === 201 || response.data.success) {
-        alert('Category added successfully!');
+        toast.success('Category added successfully!');
         navigate('/admin/category');
       }
     } catch (err) {

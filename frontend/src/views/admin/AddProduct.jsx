@@ -4,6 +4,7 @@ import Cropper from 'react-easy-crop';
 import axios from 'axios';
 import API from '../../api/axios';
 import './AddProduct.css';
+import { toast } from 'react-toastify';
 
 
 const getCroppedImg = (imageSrc, pixelCrop) => {
@@ -108,7 +109,7 @@ useEffect(() => {
   const onFileChange = (e) => {
     if (e.target.files && e.target.files.length > 0) {
       if (images.length >= 4) {
-        alert('Maximum 4 images allowed!');
+        toast.info('Maximum 4 images allowed!');
         return;
       }
       const file = e.target.files[0];
@@ -153,7 +154,7 @@ useEffect(() => {
     e.preventDefault();
 
     if (images.length < 3) {
-      alert('Minimum 3 images are required!');
+      toast.info('Minimum 3 images are required!');
       return;
     }
 
@@ -181,12 +182,12 @@ useEffect(() => {
       });
 
       if (response.data.success || response.status === 200 || response.status === 201) {
-        alert('Product Added Successfully!');
+        toast.success('Product Added Successfully!');
         navigate('/admin/products');
       }
     } catch (err) {
       console.error('Submit error:', err);
-      alert(err.response?.data?.message || 'Failed to add product! Unauthorized');
+      toast.error(err.response?.data?.message || 'Failed to add product! Unauthorized');
     }
   };
 

@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Search, Heart, X, Tag } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import API from '../../api/axios'; 
+import API from '../../api/axios';
 import './CategoryPage.css';
+import { toast } from 'react-toastify';
 
 const CategoryPage = () => {
   const navigate = useNavigate();
@@ -22,11 +23,10 @@ const CategoryPage = () => {
   const [activeMinPrice, setActiveMinPrice] = useState('');
   const [activeMaxPrice, setActiveMaxPrice] = useState('');
   const [page, setPage] = useState(1);
-const [hasMore, setHasMore] = useState(true);
+  const [hasMore, setHasMore] = useState(true);
 
   const BASE_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:5000';
 
-  
   const getImageUrl = (product) => {
     const imagePath = product?.images?.[0] || product?.image;
     if (!imagePath) return 'https://via.placeholder.com/400x400?text=No+Image';
@@ -38,32 +38,43 @@ const [hasMore, setHasMore] = useState(true);
   };
 
   useEffect(() => {
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      const prodRes = await API.get('/user/products', {
-        params: { page, limit: 8 }
-      });
-      const productData = prodRes.data?.data || [];
-      
-      if (page === 1) {
-        setProducts(productData);
-      } else {
-        setProducts(prev => [...prev, ...productData]);
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const prodRes = await API.get('/user/products', {
+          params: { page, limit: 8 }
+        });
+        const productData = prodRes.data?.data || [];
+
+        if (page === 1) {
+          setProducts(productData);
+        } else {
+          setProducts(prev => [...prev, ...productData]);
+        }
+
+        if (productData.length < 8) setHasMore(false);
+
+        try {
+          const catRes = await API.get('/user/categories');
+          const catData = catRes.data?.data || (Array.isArray(catRes.data) ? catRes.data : []);
+          setCategories(catData.map(c => c.name || c));
+        } catch {
+          const extractedCats = [...new Set(productData.map(p => p.category?.name || p.category).filter(Boolean))];
+          setCategories(extractedCats);
+        }
+
+        const extractedBrands = [...new Set(productData.map(p => p.brand).filter(Boolean))];
+        setBrands(extractedBrands);
+
+      } catch (error) {
+        console.error('Error loading data:', error);
+      } finally {
+        setLoading(false);
       }
+    };
+    fetchData();
+  }, [page]);
 
-      if (productData.length < 8) setHasMore(false);
-
-     
-    } catch (error) {
-      console.error('Error loading data:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-  fetchData();
-}, [page]);
-  
   const handleCategoryChange = (cat) => {
     setSelectedCategories(prev =>
       prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]
@@ -85,12 +96,12 @@ const [hasMore, setHasMore] = useState(true);
     e.stopPropagation();
     try {
       const response = await API.post('/user/wishlist/toggle', { productId });
-      alert(response.data?.message || 'Wishlist updated!');
+      toast.success(response.data?.message || 'Wishlist updated!');
     } catch (error) {
       if (error.response?.status === 401) {
-        alert('Please log in to add items to your wishlist!');
+        toast.info('Please log in to add items to your wishlist!');
       } else {
-        alert('Failed to update wishlist');
+        toast.error('Failed to update wishlist');
       }
     }
   };
@@ -115,7 +126,6 @@ const [hasMore, setHasMore] = useState(true);
 
   return (
     <div className="category-page-container">
-      
       <div className="category-title-section">
         <h1>Our Collection</h1>
         <div className="search-bar-wrapper">
@@ -136,9 +146,7 @@ const [hasMore, setHasMore] = useState(true);
       </div>
 
       <div className="category-main-content">
-        
         <div className="filter-sidebar">
-         
           <div className="filter-group">
             <h4>Shop For Category</h4>
             {categories.length > 0 ? (
@@ -157,7 +165,6 @@ const [hasMore, setHasMore] = useState(true);
             )}
           </div>
 
-          
           <div className="filter-group">
             <h4>Brands</h4>
             {brands.length > 0 ? (
@@ -176,7 +183,6 @@ const [hasMore, setHasMore] = useState(true);
             )}
           </div>
 
-         
           <div className="filter-group">
             <h4>Price Range</h4>
             <div className="price-range-inputs">
@@ -202,7 +208,6 @@ const [hasMore, setHasMore] = useState(true);
           </div>
         </div>
 
-        
         <div className="products-content-area">
           <div className="top-sort-bar">
             <select
@@ -224,21 +229,21 @@ const [hasMore, setHasMore] = useState(true);
             <div className="product-grid">
               {filteredProducts.length > 0 ? (
                 filteredProducts.map(product => (
-                  <div 
-                    key={product._id || product.id} 
+                  <div
+                    key={product._id || product.id}
                     className="product-card"
                     onClick={() => navigate(`/product/${product._id || product.id}`)}
                     style={{ cursor: 'pointer' }}
                   >
-                    <Heart 
-                      size={18} 
-                      className="wishlist-icon" 
+                    <Heart
+                      size={18}
+                      className="wishlist-icon"
                       onClick={(e) => handleAddToWishlist(e, product._id || product.id)}
                     />
-                    <img 
-                      src={getImageUrl(product)} 
-                      alt={product.name} 
-                      className="product-img" 
+                    <img
+                      src={getImageUrl(product)}
+                      alt={product.name}
+                      className="product-img"
                     />
                     {product.offer && (
                       <div className="product-offer-badge">
@@ -264,7 +269,9 @@ const [hasMore, setHasMore] = useState(true);
           )}
 
           <div className="pagination-container">
-            <button className="btn-load-more" onClick={()=>setPage(prev=>prev+1)}>Load More</button>
+            <button className="btn-load-more" onClick={() => setPage(prev => prev + 1)}>
+              Load More
+            </button>
           </div>
         </div>
       </div>

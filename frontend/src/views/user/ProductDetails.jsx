@@ -4,6 +4,7 @@ import { Heart, ChevronRight, Tag, Star } from 'lucide-react';
 import API from '../../api/axios';
 import './ProductDetails.css';
 import { useCart } from '../../context/CartContext';
+import { toast } from 'react-toastify';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -26,6 +27,9 @@ const ProductDetails = () => {
   const [avgRating, setAvgRating] = useState(0);
   const [reviewCount, setReviewCount] = useState(0);
   const [distribution, setDistribution] = useState({ 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 });
+
+  // Related Products State
+  const [relatedProducts, setRelatedProducts] = useState([]);
 
   const BASE_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:5000';
 
@@ -63,7 +67,7 @@ const ProductDetails = () => {
         }
       } catch (error) {
         console.error('Fetch Product Error:', error);
-        alert(error.response?.data?.message || 'Product not found');
+        toast.info(error.response?.data?.message || 'Product not found');
         navigate('/category');
       } finally {
         setLoading(false);
@@ -72,6 +76,19 @@ const ProductDetails = () => {
 
     if (id) fetchProductDetails();
   }, [id, navigate]);
+
+  // Fetch Related Products
+  useEffect(() => {
+    const fetchRelatedProducts = async () => {
+      try {
+        const res = await API.get(`/user/products/${id}/related`);
+        setRelatedProducts(res.data?.data || []);
+      } catch (error) {
+        console.error('Error fetching related products:', error);
+      }
+    };
+    if (id) fetchRelatedProducts();
+  }, [id]);
 
   useEffect(() => {
     const fetchVariants = async () => {
@@ -222,7 +239,7 @@ const ProductDetails = () => {
     try {
       const productToAdd = buildProductPayload();
       await addToCart(productToAdd, quantity);
-      alert('Added to Cart!');
+      toast.success('Added to Cart!');
     } catch (error) {
       console.error('Add to cart failed:', error);
     }
@@ -232,10 +249,10 @@ const ProductDetails = () => {
     try {
       const response = await API.post('/user/wishlist/toggle', { productId: product._id || id });
       setIsInWishlist(!isInWishlist);
-      alert(response.data?.message || 'Wishlist updated successfully!');
+      toast.success(response.data?.message || 'Wishlist updated successfully!');
     } catch (error) {
-      if (error.response?.status === 401) alert('Please log in to add items to your wishlist!');
-      else alert(error.response?.data?.message || 'Failed to update wishlist');
+      if (error.response?.status === 401) toast.info('Please log in to add items to your wishlist!');
+      else toast.error(error.response?.data?.message || 'Failed to update wishlist');
     }
   };
 
@@ -669,6 +686,30 @@ const ProductDetails = () => {
           </div>
         )}
       </section>
+
+      {/* Related Products Section */}
+      {relatedProducts.length > 0 && (
+        <section className="related-products-section" style={{ marginTop: '40px', padding: '20px', borderTop: '2px solid #eee' }}>
+          <h2 style={{ marginBottom: '20px', color: '#03544c' }}>Related Products</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
+            {relatedProducts.map((item) => (
+              <div
+                key={item._id}
+                onClick={() => navigate(`/product/${item._id}`)}
+                style={{ cursor: 'pointer', textAlign: 'center' }}
+              >
+                <img
+                  src={getImageUrl(item.images?.[0])}
+                  alt={item.name}
+                  style={{ width: '100%', height: '200px', objectFit: 'cover', borderRadius: '8px' }}
+                />
+                <h4 style={{ margin: '10px 0 5px', fontSize: '14px' }}>{item.name}</h4>
+                <p style={{ color: '#03544c', fontWeight: 'bold' }}>₹{item.price}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 };

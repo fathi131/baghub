@@ -4,6 +4,7 @@ import Cropper from 'react-easy-crop';
 import axios from 'axios';
 import API from '../../api/axios';
 import './AddProduct.css';
+import { toast } from 'react-toastify';
 
 
 const getCroppedImg = (imageSrc, pixelCrop) => {
@@ -105,7 +106,7 @@ const EditProduct = () => {
     const totalCurrentImages = existingImages.length + newImages.length;
     if (e.target.files && e.target.files.length > 0) {
       if (totalCurrentImages >= 4) {
-        alert('Maximum 4 images allowed!');
+        toast.info('Maximum 4 images allowed!');
         return;
       }
       const file = e.target.files[0];
@@ -161,7 +162,7 @@ const EditProduct = () => {
 
     const totalImages = existingImages.length + newImages.length;
     if (totalImages < 3) {
-      alert('Minimum 3 images are required!');
+      toast.error('Minimum 3 images are required!');
       return;
     }
 
@@ -193,12 +194,12 @@ const EditProduct = () => {
       });
 
       if (response.data.success || response.status === 200) {
-        alert('Product Updated Successfully!');
+        toast.success('Product Updated Successfully!');
         navigate('/admin/products');
       }
     } catch (err) {
       console.error('Update error:', err);
-      alert(err.response?.data?.message || 'Failed to update product!');
+      toast.error(err.response?.data?.message || 'Failed to update product!');
     }
   };
 
